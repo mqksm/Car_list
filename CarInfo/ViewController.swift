@@ -37,29 +37,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
         let car = cars[indexPath.row]
         
-
         cell.textLabel?.text = car.brand + " " + car.model
-
         cell.detailTextLabel?.text = "Color: " + car.color + "; Type: " + car.body + "; Year: " + String(car.year)
         return cell
       }
-      
-//      cell.textLabel?.text = cars[indexPath.row].brand + " " + cars[indexPath.row].model
-//
-//      cell.detailTextLabel?.text = "Color: " + cars[indexPath.row].color + "; Type: " + cars[indexPath.row].body + "; Year: " + String(cars[indexPath.row].year)
-//      return cell
-//    }
+            
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let car = cars[indexPath.row]
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+        
+        StorageManager.deleteObject(car)
+        completion(true)
+        self?.cars.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+//        tableView.reloadData()
+      }
+      return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+    
+
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue ){
         guard let newCarVC = segue.source as? NewCarTableViewController else {return}
-        
-//        guard let newCar = newCarVC.saveCar() else {return}
+
         newCarVC.saveCar()
         cars = Array(realm.objects(Car.self).reversed())
         
         tableView.reloadData()
-//        tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
-//                             with: UITableView.RowAnimation.top)
+
     }
     
 

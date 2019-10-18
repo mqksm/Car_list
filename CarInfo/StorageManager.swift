@@ -18,5 +18,11 @@ class StorageManager{
         }
     }
     
+    static func deleteObject(_ car: Car) {
+        try! realm.write {
+            realm.delete(car)
+        }
+    }
+    
 //    static func
 }
