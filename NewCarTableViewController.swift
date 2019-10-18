@@ -38,7 +38,8 @@ class NewCarTableViewController: UITableViewController {
         }
         else { saveButton.isEnabled = false }
     }
-    
+
+//    Заполнение полей для просмотра / редактирования
     private func setupEditScreen() {
         if currentCar != nil {
             modelField.text = currentCar?.model
@@ -50,10 +51,10 @@ class NewCarTableViewController: UITableViewController {
         }
     }
     
+//    Настройки панели навигации в режиме просмотра / редактирования
     private func setupNavigationBar() {
         navigationItem.leftBarButtonItem = nil
         title = currentCar!.brand + " " + currentCar!.model
-//        saveButton.isEnabled = true
     }
     
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {

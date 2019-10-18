@@ -13,18 +13,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   
     @IBOutlet weak var tableView: UITableView!
     
-    
-//    var cars = Car.getCars()
     var cars: [Car]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        isAppAlreadyLaunchedOnce()
         cars = Array(realm.objects(Car.self).reversed())
         tableView.backgroundColor = UIColor.lightGray
         tableView.dataSource = self
         tableView.delegate = self
-        
         tableView.tableFooterView = UIView() // убираем нижние ячейки
     }
 
@@ -32,6 +30,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cars.isEmpty ? 0 : cars.count
       }
       
+// Заполнение ячеек
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
@@ -42,6 +41,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
       }
             
+// Удаление свайпом
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let car = cars[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
@@ -67,15 +67,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue ){
         guard let newCarVC = segue.source as? NewCarTableViewController else {return}
-
         newCarVC.saveCar()
         cars = Array(realm.objects(Car.self).reversed())
-        
         tableView.reloadData()
 
     }
     
-
+//  Предзагрузка автомобилей при первом запуске приложения
+    func isAppAlreadyLaunchedOnce(){
+        let defaults = UserDefaults.standard
+        if let _ = defaults.string(forKey: "isAppAlreadyLaunchedOnce"){
+        }else{
+            defaults.set(true, forKey: "isAppAlreadyLaunchedOnce")
+            let firstCar = Car(brand: "Honda", year: "2007", model: "Civic", body: "Hatchback", color: "Black")
+            let secondCar = Car(brand: "Audi", year: "2010", model: "A5", body: "Coupe", color: "Red")
+            let thirdCar = Car(brand: "BMW", year: "2019", model: "X7", body: "Hatchback", color: "Blue")
+            StorageManager.saveObject(firstCar)
+            StorageManager.saveObject(secondCar)
+            StorageManager.saveObject(thirdCar)
+        }
+    }
 
 }
 
