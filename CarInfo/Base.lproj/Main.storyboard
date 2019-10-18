@@ -42,6 +42,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="fpu-nn-JrM" kind="show" identifier="showDetail" id="6fq-w6-fMq"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -76,7 +79,7 @@
             <objects>
                 <tableViewController id="fpu-nn-JrM" customClass="NewCarTableViewController" customModule="CarInfo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cPT-Nq-QQv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <inset key="separatorInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
@@ -312,7 +315,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4wc-o4-8E1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="BXo-mC-WlH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2771.0144927536235" y="116.57608695652175"/>
+            <point key="canvasLocation" x="1890" y="133"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TXs-T0-psP">
@@ -348,7 +351,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EyW-Yy-ZLE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1863.7681159420292" y="116.57608695652175"/>
+            <point key="canvasLocation" x="1891" y="-628"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="6fq-w6-fMq"/>
+    </inferredMetricsTieBreakers>
 </document>

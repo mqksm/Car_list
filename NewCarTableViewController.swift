@@ -19,13 +19,14 @@ class NewCarTableViewController: UITableViewController {
     @IBOutlet weak var colorField: UITextField!
     @IBOutlet weak var yearField: UITextField!
     
-//    let bodyTypes = ["Sedan", "Coupe", "Hatchback", "Minivan", "Truck", "Station Wagon", "Convertible"]
+    var currentCar: Car?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.isEnabled = false
         typeLabel.text = BodyType.cases.first
         tableView.tableFooterView = UIView() // убираем нижние ячейки
+        setupEditScreen()
     }
     
     
@@ -38,6 +39,23 @@ class NewCarTableViewController: UITableViewController {
         else { saveButton.isEnabled = false }
     }
     
+    private func setupEditScreen() {
+        if currentCar != nil {
+            modelField.text = currentCar?.model
+            brandField.text = currentCar?.brand
+            typeLabel.text = currentCar?.body
+            colorField.text = currentCar?.color
+            yearField.text = currentCar?.year
+            setupNavigationBar()
+        }
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem = nil
+        title = currentCar!.brand + " " + currentCar!.model
+//        saveButton.isEnabled = true
+    }
+    
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
@@ -48,12 +66,19 @@ class NewCarTableViewController: UITableViewController {
         guard let brand = brandField.text, let model = modelField.text, let color = colorField.text, let year = yearField.text, let body = typeLabel.text  else {
             return
         }
-        
         let newCar = Car(brand: brand, year: year, model: model, body: body, color: color)
         
-        StorageManager.saveObject(newCar)
         
-        
+        if currentCar != nil {
+            try! realm.write {
+                currentCar?.brand = newCar.brand
+                currentCar?.model = newCar.model
+                currentCar?.body = newCar.body
+                currentCar?.color = newCar.color
+                currentCar?.year = newCar.year
+            }
+        }
+        else { StorageManager.saveObject(newCar) }
         }
     
 }
@@ -74,5 +99,9 @@ extension NewCarTableViewController: UIPickerViewDataSource, UIPickerViewDelegat
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeLabel.text = BodyType.cases[row]
+        if brandField.text?.isEmpty == false && modelField.text?.isEmpty == false && colorField.text?.isEmpty == false && yearField.text?.isEmpty == false{
+                    saveButton.isEnabled = true
+        }
+        else { saveButton.isEnabled = false }
     }
 }

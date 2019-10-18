@@ -55,7 +55,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
       return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+            let car = cars[indexPath.row]
+            let newCarVC = segue.destination as! NewCarTableViewController
+            newCarVC.currentCar = car
+        }
+    }
 
     
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue ){
